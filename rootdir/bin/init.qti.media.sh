@@ -1,6 +1,8 @@
 #! /vendor/bin/sh
-
-# Copyright (c) 2014, The Linux Foundation. All rights reserved.
+#==============================================================================
+#       init.qti.media.sh
+#
+# Copyright (c) 2020, The Linux Foundation. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
@@ -26,32 +28,31 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-#
+#===============================================================================
 
-dir0=/data
-trigger_file=$dir0/ims_disabled
-ims_disabled=`getprop persist.vendor.ims.disabled`
-target=`getprop ro.build.product`
-
-#if [ ! -e $trigger_file ]; then
-#   for future use in doing conditional debugging
-#else
-#
-#fi
-echo "$ims_disabled"
-echo "$target"
-
-if [ "$ims_disabled" = "0" ]; then
-    echo "ims will be enabled"
-    setprop vendor.service.qti.ims.enabled 1
-    exit
-fi
-
-if [ "$ims_disabled" = "1" ] || [ "$target" = "msm8909_512" ]; then
-    echo "ims is disabled"
-    setprop vendor.service.qti.ims.enabled 0
+if [ -f /sys/devices/soc0/soc_id ]; then
+    soc_hwid=`cat /sys/devices/soc0/soc_id` 2> /dev/null
 else
-    echo "ims is enabled"
-    setprop vendor.service.qti.ims.enabled 1
+    soc_hwid=`cat /sys/devices/system/soc/soc0/id` 2> /dev/null
 fi
+
+target=`getprop ro.board.platform`
+case "$target" in
+   "bengal")
+       case "$soc_hwid" in
+           441|471|473|474)
+               setprop vendor.media.target.version 2
+               sku_ver=`cat /sys/devices/platform/soc/5a00000.qcom,vidc1/sku_version` 2> /dev/null
+               if [ $sku_ver -eq 1 ]; then
+                   setprop vendor.media.target.version 3
+               fi
+               ;;
+           *)
+               sku_ver=`cat /sys/devices/platform/soc/5a00000.qcom,vidc/sku_version` 2> /dev/null
+               if [ $sku_ver -eq 1 ]; then
+                   setprop vendor.media.target.version 1
+               fi
+               ;;
+       esac
+       ;;
+esac
