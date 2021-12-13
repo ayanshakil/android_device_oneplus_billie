@@ -255,7 +255,7 @@ include device/oneplus/billie/sepolicy/billie-sepolicy.mk
 BOARD_VNDK_VERSION := current
 
 # Vendor security patch level
-VENDOR_SECURITY_PATCH := 2021-03-05
+VENDOR_SECURITY_PATCH := 2021-10-01
 
 # Verified Boot
 BOARD_AVB_ENABLE := true
