@@ -110,6 +110,9 @@ TARGET_MODULE_ALIASES += \
     rx_macro_dlkm.ko:audio_rx_macro.ko \
     tx_macro_dlkm.ko:audio_tx_macro.ko
 
+# Kernel modules - Load
+BOARD_VENDOR_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/modules.load))
+
 # Asserts
 TARGET_OTA_ASSERT_DEVICE := billie,OnePlusN10
 
