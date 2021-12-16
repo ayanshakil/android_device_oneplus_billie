@@ -79,7 +79,7 @@ TARGET_KERNEL_SOURCE := kernel/oneplus/sm6350
 
 # Kernel modules - Audio
 TARGET_MODULE_ALIASES += \
-    tfa98xx_dlkm.ko:audio_tfa98xx.ko \
+    tfa9894_dlkm.ko:audio_tfa9894.ko \
     snd_event_dlkm.ko:audio_snd_event.ko \
     bolero_cdc_dlkm.ko:audio_bolero_cdc.ko \
     wcd937x_slave_dlkm.ko:audio_wcd937x_slave.ko \
